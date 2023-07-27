@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 import logging as logger
+from time import time
 
 logger.getLogger().setLevel(logger.INFO)
 
@@ -152,6 +153,7 @@ def find_max(param):
 
 
 def randomforest_auto(dataframe, target, prediction_set):
+    start = time()
     # call cleaner data to clean the dataset for ML use
     cleaned_data = cleaner(dataframe, target)
 
@@ -366,6 +368,7 @@ def randomforest_auto(dataframe, target, prediction_set):
 
     grouped = final_test.groupby([f"Predicted {target}","Offpersonnelbasic", "Down", "Distance", "Minutes Left"]).size()
 
+    logger.info(f"Time Duration: {start - time()}")
     return grouped
 
 
