@@ -4,6 +4,7 @@ import logging as logger
 
 logger.getLogger().setLevel(logger.INFO)
 
+
 def find_max(param):
     max_index = 0
     agg = 0
@@ -13,10 +14,9 @@ def find_max(param):
         agg += 1
     return max_index
 
+
 def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_data):
-
     estimators = [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700]
-
 
     results = {
         "max_depth": [],
@@ -45,9 +45,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
         results["max_depth"].append(val)
 
     max_r2 = max(results["max_depth"])
-    logger.info(
-        f"Best r2 after tuning max depth is: {max(results['max_depth'])}"
-    ) 
+    logger.info(f"Best r2 after tuning max depth is: {max(results['max_depth'])}")
     depth = find_max(results["max_depth"]) + 1
     params["max_depth"] = depth
 
@@ -66,7 +64,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
     else:
         logger.info(
             f"Best r2 after tuning n_estimators is: {max(results['n_estimators'])}"
-        ) 
+        )
         max_r2 = max(results["n_estimators"])
         max_estimators = find_max(results["n_estimators"])
         params["n_estimators"] = estimators[max_estimators]
@@ -91,7 +89,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
     else:
         logger.info(
             f"Best r2 after tuning min samples split is: {max(results['min_samples_split'])}"
-        ) 
+        )
         max_r2 = max(results["min_samples_split"])
         max_samp_split = find_max(results["min_samples_split"]) + 2
         params["min_samples_split"] = max_samp_split
@@ -150,12 +148,9 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
         max_feat = find_max(results["max_features"]) + 1
         params["max_features"] = max_feat
 
-
-
     logger.info(f"Final Model Accuracy {max_r2}")
 
     logger.info(f"Tuned parameters: {params}")
-
 
     logger.info(f"Random Forest Feature Importance {forest.feature_importances_}")
     return params
