@@ -1,0 +1,663 @@
+<style>
+table { border-collapse: collapse; }
+th, td { border: solid black 1px; padding: 0 1ex; }
+</style>
+<h1 style="text-align: center">
+Calculating DVOA For the Big Ten Conference
+</h1>
+<h3 id="author-jordan-betterman">Author: Jordan Betterman</h3>
+<h3 id="email-jordan.bettermandrake.edu">Email: <a
+href="mailto:jordan.betterman@drake.edu"
+class="email">jordan.betterman@drake.edu</a></h3>
+<h4
+id="dvoa-explained-httpswww.footballoutsiders.comhelparticledvoa-explained-depth">DVOA
+Explained: <a
+href="https://www.footballoutsiders.com/help/article/dvoa-explained-depth"
+class="uri">https://www.footballoutsiders.com/help/article/dvoa-explained-depth</a></h4>
+<h4 id="link-to-data-httpscollegefootballdata.comexporter">Link to Data:
+<a href="https://collegefootballdata.com/exporter"
+class="uri">https://collegefootballdata.com/exporter</a></h4>
+<h2 id="overview">Overview</h2>
+<p>Football Outsiders is a website that has calculated advanced
+statistics for NFL teams that better evaluate how good a team is on both
+sides of the ball. One advanced statistic is DVOA which stands for
+Defense-adjusted Value Over Average. This statistic shows how efficient
+a team or player is based on down and distance. For example, a 3-yard
+run on 1st and 10 and a 3-yard run on 3rd and 10 should not be compared
+as similar runs. These 3-yard runs are completely different because of
+the situation they occur in. This is what DVOA tries to tackle. How can
+we evaluate these 2 runs separately and combine these runs with the
+other plays in the game to evaluate players and teams effectively?
+Football Outsiders calculates this stat for the NFL but not for any
+college teams, so my task was to read the documentation Football
+Outsiders gives to the public and recalculate DVOA for the Big Ten.</p>
+<h2 id="how-to-calcualte-dvoa">How To Calcualte DVOA</h2>
+<p>The foundation of calculating DVOA is identifying if a play was a
+success or not. The way that this is done is by awarding <strong>success
+points</strong> to plays that gain a certain number of yards based on
+what down it is. 1 success point is awarded if the percentage of yards
+gained to a first down. If a play results in a first down and gains more
+than 10 yards, then bonus points are awarded. Finally, if a play results
+in a loss of yards, interception, or fumble, then penalties are given to
+that play. A fumble is awarded success points a range between 2 values
+depending on the field position of where the fumble occurred. A penalty
+is given regardless of who recovers the fumble. The success point values
+are shown below:</p>
+<center>
+<table>
+<tr>
+<th style="text-align: center">
+1 Success Point
+</th>
+<th style="text-align: center">
+Bonus Points
+</th>
+<th style="text-align: center">
+Penalties
+</th>
+</tr>
+<tr>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Down</th>
+<th style="text-align: center;">Yards Gained %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">More than 45%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">More than 60%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3 &amp; 4</td>
+<td style="text-align: center;">More than 100%</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Yards Gained</th>
+<th style="text-align: center;">Success Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">10 - 19</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">20 - 39</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">40+</td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Event</th>
+<th style="text-align: center;">Success Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Loss of 3 or more yards</td>
+<td style="text-align: center;">-1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Interception</td>
+<td style="text-align: center;">-6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Fumble</td>
+<td style="text-align: center;">-1.4 to -4</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+</center>
+<p>Once success points are awarded, we will find the conference average
+of success points for each down and distance. Then we will calculate the
+VOA in DVOA by dividing the success points awarded for that play by the
+conference average of success points awarded in that situation. Once
+this is completed, the final step is to add the defense adjustment to
+the calculation. This is done by subtracting the calculated VOA from the
+success percentage of the opposition (gaining success points on offense
+or not allowing success points on defense). After that step is done, we
+will normalize the results so the conference average DVOA is 0%.</p>
+<h2 id="how-can-we-use-dvoa">How can we use DVOA?</h2>
+<p>DVOA is a great statistic that can evaluate where teams lie within
+the Big Ten conference as well as within the FBS. A huge advantage to
+how DVOA is calculated is that we can look at certain down and distance
+scenarios to identify where teams struggle or excel on both sides of the
+ball. This can save a lot of time when scouting an opponent so the
+coaching staff can focus on game planning around those scenarios.
+Obviously, this is <strong>NOT</strong> a replacement for film study,
+but it can help guide where coaches look when scouting opponents.
+Another use case for DVOA is that we can evaluate player performance
+compared to the Big Ten or FBS. Calculating DVOA for offensive skill
+players is pretty easy to do, but if we wanted to look at evaluating
+O-Linemen or defensive players it can get difficult. So, it would take
+some time to thoughtfully calculate DVOA for non-skill players in the
+future.</p>
+<div style="page-break-after: always;">
+
+</div>
+<h2 id="results">Results</h2>
+<p>I calculated the DVOA for each Big Ten team and then split it up into
+overall, run, and pass for both offense and defense. These numbers are
+normalized meaning that the best offenses have a positive DVOA while the
+worst offenses have a negative DVOA. This is then flipped for defense
+where the best defenses have a negative DVOA and the worst defenses have
+a positive DVOA. If a team has a 0 DVOA then they are at the conference
+average. Now lets look at the results for offensive DVOA:</p>
+<center>
+<table>
+<tr>
+<th style="text-align: center">
+Overall Offense
+</th>
+<th style="text-align: center">
+Passing Offense
+</th>
+<th style="text-align: center">
+Rushing Offense
+</th>
+</tr>
+<tr>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Team</th>
+<th style="text-align: center;">DVOA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Ohio State</td>
+<td style="text-align: center;">10.85%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Minnesota</strong></td>
+<td style="text-align: center;"><strong>7.92%</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Michigan</td>
+<td style="text-align: center;">7.88%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Penn State</td>
+<td style="text-align: center;">2.37%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wisconsin</td>
+<td style="text-align: center;">2.04%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan State</td>
+<td style="text-align: center;">0.23%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Illinois</td>
+<td style="text-align: center;">0.01%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Purdue</td>
+<td style="text-align: center;">-0.08%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Maryland</td>
+<td style="text-align: center;">-2.50%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Rutgers</td>
+<td style="text-align: center;">-5.22%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Indiana</td>
+<td style="text-align: center;">-5.26%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Northwestern</td>
+<td style="text-align: center;">-6.47%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Iowa</td>
+<td style="text-align: center;">-6.81%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Nebraska</td>
+<td style="text-align: center;">-7.65%</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Team</th>
+<th style="text-align: center;">DVOA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Ohio State</td>
+<td style="text-align: center;">7.19%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Minnesota</strong></td>
+<td style="text-align: center;"><strong>6.20%</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wisconsin</td>
+<td style="text-align: center;">5.29%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Penn State</td>
+<td style="text-align: center;">4.28%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Purdue</td>
+<td style="text-align: center;">2.46%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Illinois</td>
+<td style="text-align: center;">1.80%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Michigan State</td>
+<td style="text-align: center;">1.40%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan</td>
+<td style="text-align: center;">-0.02%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Maryland</td>
+<td style="text-align: center;">-1.56%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Iowa</td>
+<td style="text-align: center;">-3.43%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Northwestern</td>
+<td style="text-align: center;">-3.72%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Rutgers</td>
+<td style="text-align: center;">-4.06%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Nebraska</td>
+<td style="text-align: center;">-6.43%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Indiana</td>
+<td style="text-align: center;">-6.53%</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Team</th>
+<th style="text-align: center;">DVOA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Michigan</td>
+<td style="text-align: center;">19.59%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Ohio State</td>
+<td style="text-align: center;">18.12%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Minnesota</strong></td>
+<td style="text-align: center;"><strong>12.55%</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Penn State</td>
+<td style="text-align: center;">-0.05%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wisconsin</td>
+<td style="text-align: center;">-1.30%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Illinois</td>
+<td style="text-align: center;">-1.52%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Indiana</td>
+<td style="text-align: center;">2.91%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan State</td>
+<td style="text-align: center;">-3.21%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Maryland</td>
+<td style="text-align: center;">-4.80%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Purdue</td>
+<td style="text-align: center;">-7.02%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Rutgers</td>
+<td style="text-align: center;">-7.70%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Nebraska</td>
+<td style="text-align: center;">-10.63%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Northwestern</td>
+<td style="text-align: center;">-11.46%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Iowa</td>
+<td style="text-align: center;">-13.39%</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+</center>
+<p>One interesting takeaway from the offensive results is the Pass
+Offense of Wisconsin is ranked as the 3rd most efficient pass offense in
+the conference. Although Wisconsin did not pass the ball a lot last
+season, they were efficient in getting the yards needed given the
+situation. Another takeaway is that there was a large left skewness in
+rushing offense DVOA. This means that either the top 3 (Michigan, Ohio
+State, and Minnesota) were a lot better at running the ball compared to
+the rest of the conference or the bottom teams were a lot worse at
+running the ball compared to the rest of the conference. My conclusion
+for this phenomenon is that the top 3 teams were way better than the
+conference in rushing. The top 3 teams in rushing DVOA averaged over 2
+rushing touchdowns and over 200 rushing yards per game while the rest of
+the conference was not as nearly as close to the top 3 in those
+categories. Now lets look at the results from defensive DVOA.</p>
+<center>
+<table>
+<tr>
+<th style="text-align: center">
+Overall Defense
+</th>
+<th style="text-align: center">
+Passing Defense
+</th>
+<th style="text-align: center">
+Rushing Defense
+</th>
+</tr>
+<tr>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Team</th>
+<th style="text-align: center;">DVOA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Illinois</td>
+<td style="text-align: center;">-6.89%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan</td>
+<td style="text-align: center;">-5.23%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ohio State</td>
+<td style="text-align: center;">-3.58%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Iowa</td>
+<td style="text-align: center;">-3.08%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wisconsin</td>
+<td style="text-align: center;">-2.65%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Minnesota</strong></td>
+<td style="text-align: center;"><strong>-1.94%</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Penn State</td>
+<td style="text-align: center;">-0.08%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Purdue</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Rutgers</td>
+<td style="text-align: center;">0.07%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Indiana</td>
+<td style="text-align: center;">2.59%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Maryland</td>
+<td style="text-align: center;">2.60%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Nebraska</td>
+<td style="text-align: center;">3.97%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Northwestern</td>
+<td style="text-align: center;">5.08%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan State</td>
+<td style="text-align: center;">-7.65%</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Team</th>
+<th style="text-align: center;">DVOA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Rutgers</td>
+<td style="text-align: center;">-7.65%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan</td>
+<td style="text-align: center;">-5.51%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Iowa</td>
+<td style="text-align: center;">-3.86%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Illinois</td>
+<td style="text-align: center;">-3.04%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Penn State</td>
+<td style="text-align: center;">-1.88%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Nebraska</td>
+<td style="text-align: center;">-1.00%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ohio State</td>
+<td style="text-align: center;">-0.07%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Minnesota</strong></td>
+<td style="text-align: center;"><strong>0.02%</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Maryland</td>
+<td style="text-align: center;">1.41%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Northwestern</td>
+<td style="text-align: center;">2.91%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wisconsin</td>
+<td style="text-align: center;">3.48%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Purdue</td>
+<td style="text-align: center;">4.20%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Michigan State</td>
+<td style="text-align: center;">4.23%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Indiana</td>
+<td style="text-align: center;">7.84%</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Team</th>
+<th style="text-align: center;">DVOA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Illinois</td>
+<td style="text-align: center;">-15.15%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Wisconsin</td>
+<td style="text-align: center;">-12.50%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ohio State</td>
+<td style="text-align: center;">-8.58%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Michigan</td>
+<td style="text-align: center;">-8.52%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Purdue</td>
+<td style="text-align: center;">-7.67%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Minnesota</strong></td>
+<td style="text-align: center;"><strong>-6.13%</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Iowa</td>
+<td style="text-align: center;">-4.87%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Indiana</td>
+<td style="text-align: center;">-3.71%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Penn State</td>
+<td style="text-align: center;">1.49%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Maryland</td>
+<td style="text-align: center;">4.25%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Michigan State</td>
+<td style="text-align: center;">9.12%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Northwestern</td>
+<td style="text-align: center;">11.20%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Rutgers</td>
+<td style="text-align: center;">13.64%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Nebraska</td>
+<td style="text-align: center;">14.76%</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+</center>
+<p>The main takeaway from this table is that Minnesota sized up to be
+around the conference in defense efficiency. This is an interesting find
+from these results because Minnesota was 3rd in points allowed, 5th in
+rushing yards allowed per game, and 4th in passing yards allowed per
+game. I believe Minnesota is in this position because they did not
+produce as many turnovers compared to the rest of the conference.
+Turnovers give larger penalties than tackles for loss or sacks. This
+means that teams with more turnovers per game are higher ranked in
+Defensive DVOA rankings. Illinois, for example, is ranked 1st in overall
+defensive DVOA and also was 1st in the Big Ten in turnovers per game
+(2.5).</p>
+<div style="page-break-after: always;">
+
+</div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Overall, I think this statistic will be very helpful for evaluating
+teams this season. I think it will be helpful to the coaching staff
+because it will give a good indication of how efficient teams are in
+certain facets of the game as well as identifying weak areas in their
+game compared to the conference. Now that this research work has been
+completed, I can easily transfer this code over to datasets that provide
+down, distance, and play result. So, scaling up this project will be
+simple to do. I have calculated all the Down and Distance DVOAs for the
+Big Ten, but there is a lot of data to go through for each team.
+Therefore, I left it out of this report to show the general application
+of DVOA.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>Now that we have calculated DVOA successfully. I want to further
+expand calculating DVOA to all FBS teams. That way we can evaluate teams
+and players at both their conference level and at the entire FBS level.
+I would also like to create an SQL database where the calculations can
+be housed, time-stamped by date, and easily accessible. That way we can
+identify trends for the teams that we face each week and see where they
+may be improving or struggling in each week. As mentioned in the
+conclusion, I have written the DVOA calculation to be to simple to scale
+up in size to calculate all FBS teams. The issue that I will tackle next
+is to figure out how to store the data in a secure and accessible
+way.</p>
