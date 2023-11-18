@@ -25,9 +25,9 @@ def play_by_play(teams=BIG_TEN_TEAMS):
 
     for team in teams:
         print(team)
-        for i in range(1, 14):
+        for i in range(1, 6):
             plays = requests.get(
-                url=f"https://api.collegefootballdata.com/plays?seasonType=regular&week={i}&year=2022&team={team}",
+                url=f"https://api.collegefootballdata.com/plays?seasonType=regular&week={i}&year=2023&team={team}",
                 headers={
                     "Authorization": "Bearer ti+f5GzjSdgTT5Lc1m5PcOE4kcRZrs327v2VUYK8sUo2sSIEvnZZQ08FUsINUCYL"
                 },

@@ -65,7 +65,7 @@ I calculated the DVOA for each Big Ten team and then split it up into overall, r
 | Team | DVOA |
 | :--: |  :--:|
 |  Ohio State |  10.85%  |
-|  **Minnesota**  |  **7.92%**  |
+|  Minnesota  |  7.92%  |
 |  Michigan |    7.88%  |
 | Penn State| 2.37% |
 | Wisconsin | 2.04%  |
@@ -84,7 +84,7 @@ I calculated the DVOA for each Big Ten team and then split it up into overall, r
 | Team | DVOA |
 | :--: |  :--:|
 |  Ohio State |  7.19%  |
-|  **Minnesota**  |  **6.20%**  |
+|  Minnesota  |  6.20%  |
 |  Wisconsin |    5.29%  |
 | Penn State| 4.28% |
 | Purdue | 2.46%  |
@@ -104,7 +104,7 @@ I calculated the DVOA for each Big Ten team and then split it up into overall, r
 | :--: |  :--:|
 |  Michigan |  19.59%  |
 |  Ohio State  |  18.12%  |
-|  **Minnesota** |    **12.55%**  |
+|  Minnesota |    12.55%  |
 | Penn State| -0.05% |
 | Wisconsin | -1.30%  |
 | Illinois | -1.52% |
@@ -132,7 +132,7 @@ One interesting takeaway from the offensive results is the Pass Offense of Wisco
 |  Ohio State |    -3.58%  |
 | Iowa | -3.08% |
 | Wisconsin | -2.65%  |
-| **Minnesota** | **-1.94%** |
+| Minnesota | -1.94% |
 | Penn State | -0.08% |
 | Purdue | 0% |
 | Rutgers | 0.07% |
@@ -153,7 +153,7 @@ One interesting takeaway from the offensive results is the Pass Offense of Wisco
 | Penn State | -1.88%  |
 | Nebraska | -1.00% |
 | Ohio State | -0.07% |
-| **Minnesota** | **0.02%** |
+| Minnesota | 0.02% |
 | Maryland | 1.41% |
 | Northwestern | 2.91% |
 | Wisconsin | 3.48% |
@@ -170,7 +170,7 @@ One interesting takeaway from the offensive results is the Pass Offense of Wisco
 |  Ohio State |    -8.58%  |
 |  Michigan | -8.52% |
 |  Purdue | -7.67%  |
-|  **Minnesota** | **-6.13%** |
+|  Minnesota | -6.13% |
 |  Iowa | -4.87% |
 |  Indiana | -3.71% |
 |  Penn State | 1.49% |

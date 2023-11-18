@@ -9,10 +9,15 @@ packages = [{include = "down_breaks"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 scikit-learn = "*"
-pandas = "*"
-numpy = "*"
+pandas = ">2.0.0"
+numpy = "<1.24"
 logging = "*"
 argparse = "*"
+scikit-optimize = "*"
+xgboost = "*"
+pyarrow = "*"
+matplotlib = "*"
+fastapi = "*"
 
 
 [tool.poetry.group.dev.dependencies]

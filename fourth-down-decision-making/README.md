@@ -59,6 +59,3 @@ The rest of the situations within the opponent's half were predicted as a Field 
 ## Conclusion 
 Overall, I think this research was a success. The models that I made were not overly aggressive as well as give good context on how these 4th decisions should be in Big Ten Conference play. Some possible further would be to look into adding the new teams joining the Big Ten into the equation and see if that changes anything. 
 
-## Final Remarks
-If you have any questions about the model making process feel free to send me an email. I hope this paper was insightful and will be of good use for this season. Go Gophers!
-
