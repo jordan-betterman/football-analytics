@@ -10,14 +10,17 @@ packages = [{include = "down_breaks"}]
 python = "^3.10"
 scikit-learn = "*"
 pandas = ">2.0.0"
-numpy = "<1.24"
+numpy = ">=2.0.0"
 logging = "*"
 argparse = "*"
 scikit-optimize = "*"
 xgboost = "*"
 pyarrow = "*"
 matplotlib = "*"
-fastapi = "*"
+keras = "*"
+tensorflow-macos = "*"
+seaborn = "*"
+keras-tuner = "*"
 
 
 [tool.poetry.group.dev.dependencies]
