@@ -1,4 +1,4 @@
-# Welcome to the Football Analytics Repo!
+# College Football Analytics 🏈
 
 ## [About Me](https://www.mccormick.northwestern.edu/machine-learning-data-science/people/students/class-of-2025/betterman-jordan.html)
 Hello! My name is Jordan Betterman. I am a Graduate Student at Northwestern University studying Machine Learning and Data Science (MLDS Program). I graduated from Drake University studying Data Analytics and Computer Science in May of 2024. 
