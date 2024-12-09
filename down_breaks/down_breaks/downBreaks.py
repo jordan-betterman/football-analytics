@@ -4,9 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from itertools import product
-import matplotlib.pyplot as plt
 import logging as logger
 from time import time
 from arguments import Arguments
@@ -27,15 +25,28 @@ def cleaner(dataframe, target):
         (dataframe["previous_play"] == "R") | (dataframe["previous_play"] == "P")
     ]
 
-    if len(dataframe['Offpersonnelbasic'].unique()) > 10:
-        personnel_packages = dataframe.groupby(["Offpersonnelbasic"])["Offpersonnelbasic"].agg(['count']).reset_index()
-        dataframe = dataframe[~dataframe['Offpersonnelbasic'].isin(personnel_packages[personnel_packages['count'] < 10]['Offpersonnelbasic'])]
+    if len(dataframe["Offpersonnelbasic"].unique()) > 10:
+        personnel_packages = (
+            dataframe.groupby(["Offpersonnelbasic"])["Offpersonnelbasic"]
+            .agg(["count"])
+            .reset_index()
+        )
+        dataframe = dataframe[
+            ~dataframe["Offpersonnelbasic"].isin(
+                personnel_packages[personnel_packages["count"] < 10][
+                    "Offpersonnelbasic"
+                ]
+            )
+        ]
 
     # extra data cleaning pieces to make downs be 1-4, runpass to only be R or P, and offensive personnel to be known and have 11 players on the field
     if target == "Runpass":
         dataframe = dataframe[(~dataframe.Offpersonnelbasic.isin(["Unknown"]))]
     elif target == "Playaction":
-        dataframe = dataframe[(~dataframe.Offpersonnelbasic.isin(["Unknown"])) & (dataframe["Runpass"] == "P")]
+        dataframe = dataframe[
+            (~dataframe.Offpersonnelbasic.isin(["Unknown"]))
+            & (dataframe["Runpass"] == "P")
+        ]
     elif target == "Passdirection":
         dataframe = dataframe[
             (dataframe["Offpersonnelbasic"] != "Unknown")
@@ -51,7 +62,7 @@ def cleaner(dataframe, target):
         ]
         if target == "Runconceptprimary":
             dataframe = dataframe[(dataframe["Runconceptprimary"] != "UNDEFINED")]
-    
+
     # created a subset with the features that can be seen presnap to do ML on
     subset = dataframe[
         [
@@ -109,12 +120,33 @@ def prediction_set(dataset):
     }
     logger.info("starting prediction set process")
     logger.info(f"personnel packages: {personnel}")
-    
-    all_combo_set = product(quarter, minutes_left, down, distance, personnel, yards_on_previous_play, 
-                                    field_position, score_differential, previous_play)
 
-    final_test = pd.DataFrame(all_combo_set, columns=["Quarter", "Minutes Left", "Down", "Distance", "Offpersonnelbasic", 
-                                        "Yards on Previous Play", "Fieldposition", "Scoredifferential", "previous_play"])
+    all_combo_set = product(
+        quarter,
+        minutes_left,
+        down,
+        distance,
+        personnel,
+        yards_on_previous_play,
+        field_position,
+        score_differential,
+        previous_play,
+    )
+
+    final_test = pd.DataFrame(
+        all_combo_set,
+        columns=[
+            "Quarter",
+            "Minutes Left",
+            "Down",
+            "Distance",
+            "Offpersonnelbasic",
+            "Yards on Previous Play",
+            "Fieldposition",
+            "Scoredifferential",
+            "previous_play",
+        ],
+    )
 
     return final_test
 
@@ -131,20 +163,20 @@ def find_max(param):
 
 def download_data(dataset, name):
     output_file_path = Path(name)
+    print(output_file_path)
 
     output_file_path.parent.mkdir(parents=True, exist_ok=True)
     dataset.to_csv(output_file_path, index=False)
 
+
 def final_prediction(model, predictions, predictors, target, le):
-
-
     logger.info("starting to predict")
     final_test_dummy = pd.get_dummies(
         predictions, columns=["Offpersonnelbasic", "previous_play"]
     )
 
     model_predictions = model.predict(final_test_dummy)
-    logger.info('Completed prediction process')
+    logger.info("Completed prediction process")
 
     predictions[f"Predicted {target}"] = model_predictions
 
@@ -160,16 +192,21 @@ def randomforest_auto(
 
     cleaned_data = cleaner(dataframe, target)
 
-    cleaned_data = cleaned_data.astype({"Yards on Previous Play": "int", 'Minutes Left': "int"})
+    cleaned_data = cleaned_data.astype(
+        {"Yards on Previous Play": "int", "Minutes Left": "int"}
+    )
 
-    cleaned_data_w_dummies = pd.get_dummies(cleaned_data, columns=["previous_play", "Offpersonnelbasic"])
+    cleaned_data_w_dummies = pd.get_dummies(
+        cleaned_data, columns=["previous_play", "Offpersonnelbasic"]
+    )
     logger.info(f"completed data cleaning with dummies")
 
     # predictor variables used: all variables besides the target variable
     predictors = cleaned_data_w_dummies.columns.drop([target])
     target = target  # target variable
 
-    # splits the subset into a training set to fit the models on and a testing set to test the models on for their accuracy
+    # splits the subset into a training set to fit the models on and a testing set to
+    # test the models on for their accuracy
     train_data, test_data, train_sln, test_sln = train_test_split(
         cleaned_data_w_dummies[predictors],
         cleaned_data_w_dummies[target],
@@ -177,11 +214,11 @@ def randomforest_auto(
         random_state=0,
     )
 
-    
     estimators = np.arange(start=25, stop=151, step=25)
 
     criterions = ["gini", "entropy"]
 
+    # house all the accuracies when tuning parameters
     results = {
         "max_depth": [],
         "n_estimators": [],
@@ -189,8 +226,9 @@ def randomforest_auto(
         "min_samples_leaf": [],
         "max_features": [],
         "criterion": [],
-    }  # house all the accuracies when tuning parameters
+    }
 
+    # house the paramters for the model
     params = {
         "max_depth": 0,
         "n_estimators": 0,
@@ -198,8 +236,7 @@ def randomforest_auto(
         "min_samples_leaf": 0,
         "max_features": 0,
         "criterion": "",
-    }  # house the paramters for the model
-
+    }
     max_accuracy = 0
 
     forest = RandomForestClassifier(random_state=0)
@@ -217,9 +254,7 @@ def randomforest_auto(
         results["max_depth"].append(val)
 
     max_accuracy = max(results["max_depth"])
-    logger.info(
-        f"Best Accuracy after tuning max depth is: {max(results['max_depth'])}"
-    )  # print max accuracy to see if it improves
+    logger.info(f"Best Accuracy after tuning max depth is: {max(results['max_depth'])}")
     depth = find_max(results["max_depth"]) + 1
     params["max_depth"] = depth
 
@@ -238,7 +273,7 @@ def randomforest_auto(
     else:
         logger.info(
             f"Best Accuracy after tuning n_estimators is: {max(results['n_estimators'])}"
-        )  # print max accuracy to see if it improves
+        )
         max_accuracy = max(results["n_estimators"])
         max_estimators = find_max(results["n_estimators"])
         params["n_estimators"] = estimators[max_estimators]
@@ -263,7 +298,7 @@ def randomforest_auto(
     else:
         logger.info(
             f"Best Accuracy after tuning min samples split is: {max(results['min_samples_split'])}"
-        )  # print max accuracy to see if it improves
+        )
         max_accuracy = max(results["min_samples_split"])
         max_samp_split = find_max(results["min_samples_split"]) + 2
         params["min_samples_split"] = max_samp_split
@@ -289,7 +324,7 @@ def randomforest_auto(
     else:
         logger.info(
             f"Best Accuracy after tuning min samples leaf is: {max(results['min_samples_leaf'])}"
-        )  # print max accuracy to see if it improves
+        )
         max_accuracy = max(results["min_samples_leaf"])
         max_samp_leaf = find_max(results["min_samples_leaf"]) + 1
         params["min_samples_leaf"] = max_samp_leaf
@@ -315,9 +350,10 @@ def randomforest_auto(
         max_feat = len(cleaned_data.columns) ** 0.5
         params["max_features"] = max_feat
     else:
+        # print max accuracy to see if it improves
         logger.info(
             f"Best Accuracy after tuning max features is: {max(results['max_features'])}"
-        )  # print max accuracy to see if it improves
+        )
         max_accuracy = max(results["max_features"])
         max_feat = find_max(results["max_features"]) + 1
         params["max_features"] = max_feat
@@ -339,9 +375,9 @@ def randomforest_auto(
         val = accuracy_score(test_sln, prediction)
         results["criterion"].append(val)
 
-    logger.info(
-        f"Best Accuracy after tuning criterion is: {max(results['criterion'])}"
-    )  # print max accuracy to see if it improves
+    # print max accuracy to see if it improves
+    logger.info(f"Best Accuracy after tuning criterion is: {max(results['criterion'])}")
+
     max_accuracy = max(results["criterion"])
     max_criterion = find_max(results["criterion"])
     params["criterion"] = criterions[max_criterion]
@@ -351,11 +387,6 @@ def randomforest_auto(
     logger.info(f"Tuned parameters: {params}")
 
     logger.info(f"Random Forest Feature Importance {forest.feature_importances_}")
-    cm = confusion_matrix(test_sln, prediction, labels=forest.classes_)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm,
-                                display_labels=forest.classes_)
-    disp.plot()
-    plt.show()
 
     final_test = prediction_set(cleaned_data)
 
@@ -375,16 +406,28 @@ def randomforest_auto(
     )
     forest.fit(train_data, train_sln)
     predictions = forest.predict(final_test_data)
-    logger.info('completed predicting')
+    logger.info("completed predicting")
 
     final_test[f"Predicted {target}"] = predictions
 
-    grouped = final_test.groupby(
-        ["Offpersonnelbasic", "Down", "Distance", "Minutes Left", f"Predicted {target}"]
-    )[f"Predicted {target}"].agg(['count']).reset_index()
+    grouped = (
+        final_test.groupby(
+            [
+                "Offpersonnelbasic",
+                "Down",
+                "Distance",
+                "Minutes Left",
+                f"Predicted {target}",
+            ]
+        )[f"Predicted {target}"]
+        .agg(["count"])
+        .reset_index()
+    )
     logger.info(grouped.head())
 
-    grouped['percentage'] = grouped['count'] / grouped.groupby(["Offpersonnelbasic", "Down", "Distance", "Minutes Left"])["count"].transform('sum')
+    grouped["percentage"] = grouped["count"] / grouped.groupby(
+        ["Offpersonnelbasic", "Down", "Distance", "Minutes Left"]
+    )["count"].transform("sum")
     logger.info(grouped.head())
 
     download_data(grouped, f"{output}/{team}/{target}_{year}.csv")
@@ -400,4 +443,5 @@ def main():
     randomforest_auto(args.file, args.predictor, args.output, args.team, args.year)
 
 
-main()
+if __name__ == "__main__":
+    main()

@@ -22,7 +22,10 @@ class ArgumentsBase(object):
         self.parser.add_argument("--file", type=str)
         self.parser.add_argument("--team", type=str, help="team name")
         self.parser.add_argument(
-            "--output", type=str, default="/mnt/c/Users/jordb/Desktop/Sports Analytics Projects/Football/Minnesota Football/", help="output folder"
+            "--output",
+            type=str,
+            default="/Users/jordanbetterman/Desktop/down-breaks",
+            help="output folder",
         )
         self.parser.add_argument(
             "--year", type=str, default="2023", help="year of dataset"

@@ -15,7 +15,6 @@ The first project I worked on was predicting whether a team will run or pass the
 
 
 ## Results
-The results of this project was a astounding success! The cross validation accuracy scores for the models hovered around 70%-80%. That's really good! The time it takes to run one model and predict all the data is less than 10 minutes. Also, the script can predict other categorical data columns that PFF provides. I have expanded the capabilities of the script to also predict pass direction, whether a play will be play action or not, run concepts, and run direction. Pass direction was the least accurate, but the rest of the variables predicted had similar accurate scores to the run/pass models that were created. Overall, this project was a success. The next step is taking the prediction set that the model created and communicating it to the coaching staff effectively.
-
+The results of this project was a astounding success! The cross validation accuracy scores for the models hovered around 70%-80%. That's really good! The time it takes to run one model and predict all the data is less than 10 minutes. Also, the script can predict other categorical data columns that PFF provides. I have expanded the capabilities of the script to also predict pass direction, whether a play will be play action or not, run concepts, and run direction. Pass direction was the least accurate, but the rest of the variables predicted had similar accurate scores to the run/pass models that were created.
 
 ### Used PFF Data as Model Input

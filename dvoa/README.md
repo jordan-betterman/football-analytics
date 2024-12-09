@@ -1,7 +1,7 @@
-<style>
+<!-- <style>
 table { border-collapse: collapse; }
 th, td { border: solid black 1px; padding: 0 1ex; }
-</style>
+</style> -->
 
 <h1 style= "text-align: center">Calculating DVOA For the Big Ten Conference</h1>
 
