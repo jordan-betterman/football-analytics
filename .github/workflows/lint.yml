@@ -30,8 +30,8 @@ jobs:
 
     # Step 4: Run black
     - name: Run black
-      run: black --check .
+      run: poetry run black --check .
 
     # Step 5: Run flake8
     - name: Run flake8
-      run: flake8 .
+      run: poetry run flake8 .
