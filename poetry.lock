@@ -500,6 +500,22 @@ files = [
 tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipython", "littleutils", "pytest", "rich"]
 
 [[package]]
+name = "flake8"
+version = "7.1.1"
+description = "the modular source code checker: pep8 pyflakes and co"
+optional = false
+python-versions = ">=3.8.1"
+files = [
+    {file = "flake8-7.1.1-py2.py3-none-any.whl", hash = "sha256:597477df7860daa5aa0fdd84bf5208a043ab96b8e96ab708770ae0364dd03213"},
+    {file = "flake8-7.1.1.tar.gz", hash = "sha256:049d058491e228e03e67b390f311bbf88fce2dbaa8fa673e7aea87b7198b8d38"},
+]
+
+[package.dependencies]
+mccabe = ">=0.7.0,<0.8.0"
+pycodestyle = ">=2.12.0,<2.13.0"
+pyflakes = ">=3.2.0,<3.3.0"
+
+[[package]]
 name = "fonttools"
 version = "4.55.2"
 description = "Tools to manipulate font files"
@@ -623,6 +639,44 @@ files = [
 
 [package.extras]
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
+
+[[package]]
+name = "imbalanced-learn"
+version = "0.12.4"
+description = "Toolbox for imbalanced dataset in machine learning."
+optional = false
+python-versions = "*"
+files = [
+    {file = "imbalanced-learn-0.12.4.tar.gz", hash = "sha256:8153ba385d296b07d97e0901a2624a86c06b48c94c2f92da3a5354827697b7a3"},
+    {file = "imbalanced_learn-0.12.4-py3-none-any.whl", hash = "sha256:d47fc599160d3ea882e712a3a6b02bdd353c1a6436d8d68d41b1922e6ee4a703"},
+]
+
+[package.dependencies]
+joblib = ">=1.1.1"
+numpy = ">=1.17.3"
+scikit-learn = ">=1.0.2"
+scipy = ">=1.5.0"
+threadpoolctl = ">=2.0.0"
+
+[package.extras]
+docs = ["keras (>=2.4.3)", "matplotlib (>=3.1.2)", "memory-profiler (>=0.57.0)", "numpydoc (>=1.5.0)", "pandas (>=1.0.5)", "pydata-sphinx-theme (>=0.13.3)", "seaborn (>=0.9.0)", "sphinx (>=6.0.0)", "sphinx-copybutton (>=0.5.2)", "sphinx-design (>=0.5.0)", "sphinx-gallery (>=0.13.0)", "sphinxcontrib-bibtex (>=2.4.1)", "tensorflow (>=2.4.3)"]
+examples = ["keras (>=2.4.3)", "matplotlib (>=3.1.2)", "pandas (>=1.0.5)", "seaborn (>=0.9.0)", "tensorflow (>=2.4.3)"]
+optional = ["keras (>=2.4.3)", "pandas (>=1.0.5)", "tensorflow (>=2.4.3)"]
+tests = ["black (>=23.3.0)", "flake8 (>=3.8.2)", "keras (>=2.4.3)", "mypy (>=1.3.0)", "pandas (>=1.0.5)", "pytest (>=5.0.1)", "pytest-cov (>=2.9.0)", "tensorflow (>=2.4.3)"]
+
+[[package]]
+name = "imblearn"
+version = "0.0"
+description = "Toolbox for imbalanced dataset in machine learning."
+optional = false
+python-versions = "*"
+files = [
+    {file = "imblearn-0.0-py2.py3-none-any.whl", hash = "sha256:d42c2d709d22c00d2b9a91e638d57240a8b79b4014122d92181fcd2549a2f79a"},
+    {file = "imblearn-0.0.tar.gz", hash = "sha256:d8fbb662919c1b16f438ad91a8256220e53bcf6815c9ad5502c518b798de34f2"},
+]
+
+[package.dependencies]
+imbalanced-learn = "*"
 
 [[package]]
 name = "ipykernel"
@@ -1034,6 +1088,17 @@ files = [
 
 [package.dependencies]
 traitlets = "*"
+
+[[package]]
+name = "mccabe"
+version = "0.7.0"
+description = "McCabe checker, plugin for flake8"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e"},
+    {file = "mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325"},
+]
 
 [[package]]
 name = "mdurl"
@@ -1635,6 +1700,17 @@ files = [
 tests = ["pytest"]
 
 [[package]]
+name = "pycodestyle"
+version = "2.12.1"
+description = "Python style guide checker"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pycodestyle-2.12.1-py2.py3-none-any.whl", hash = "sha256:46f0fb92069a7c28ab7bb558f05bfc0110dac69a0cd23c61ea0040283a9d78b3"},
+    {file = "pycodestyle-2.12.1.tar.gz", hash = "sha256:6838eae08bbce4f6accd5d5572075c63626a15ee3e6f842df996bf62f6d73521"},
+]
+
+[[package]]
 name = "pycparser"
 version = "2.22"
 description = "C parser in Python"
@@ -1643,6 +1719,17 @@ python-versions = ">=3.8"
 files = [
     {file = "pycparser-2.22-py3-none-any.whl", hash = "sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc"},
     {file = "pycparser-2.22.tar.gz", hash = "sha256:491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6"},
+]
+
+[[package]]
+name = "pyflakes"
+version = "3.2.0"
+description = "passive checker of Python programs"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyflakes-3.2.0-py2.py3-none-any.whl", hash = "sha256:84b5be138a2dfbb40689ca07e2152deb896a65c3a3e24c251c5c62489568074a"},
+    {file = "pyflakes-3.2.0.tar.gz", hash = "sha256:1c61603ff154621fb2a9172037d84dca3500def8c8b630657d1701f026f8af3f"},
 ]
 
 [[package]]
@@ -2189,4 +2276,4 @@ scikit-learn = ["scikit-learn"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "c0e624a921d857fbe487e5d1181d72b73a42e0e149a2f0f038b3988bfddda304"
+content-hash = "4ba878985f647aafe82dad555869568ab447043fde39fd792e6a044e8978db6b"

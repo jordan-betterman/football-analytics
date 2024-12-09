@@ -1,15 +1,10 @@
-<!-- <style>
-table { border-collapse: collapse; }
-th, td { border: solid black 1px; padding: 0 1ex; }
-</style> -->
-
-<h1 style= "text-align: center">Calculating DVOA For the Big Ten Conference</h1>
+# Calculating DVOA For the Big Ten Conference
 
 ### Author: Jordan Betterman
 
 ### Email: <jordan.betterman@drake.edu>
 
-#### DVOA Explained: <https://www.footballoutsiders.com/help/article/dvoa-explained-depth>
+#### DVOA Explained: <https://ftnfantasy.com/nfl/dvoa-explainer>
 
 #### Link to Data: <https://collegefootballdata.com/exporter>
 
