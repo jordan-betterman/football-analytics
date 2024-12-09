@@ -1,7 +1,6 @@
 # import libraries
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score
 from sklearn.ensemble import RandomForestClassifier
@@ -198,7 +197,7 @@ def randomforest_auto(
         columns=["Offpersonnelbasic", "previous_play", "Hash"],
         dtype=np.int8,
     )
-    logging.info(f"completed data cleaning with dummies")
+    logging.info("completed data cleaning with dummies")
 
     # predictor variables used: all variables besides the target variable
     predictors = cleaned_data_w_dummies.columns.drop([target])
@@ -230,8 +229,8 @@ def randomforest_auto(
     logging.info("Baseline Random Forest Evaluation Scores")
     logging.info(f"OOB Score: {round(baselineforest.oob_score_, 4) * 100}%")
     logging.info(f"AUC: {baseline_auc}")
-    logging.info(f"Specificity: {round(tn / (tn+fp), 4) * 100}%")
-    logging.info(f"Sensitivity: {round(round(tp / (tp+fn), 4) * 100, 2)}%")
+    logging.info(f"Specificity: {round(tn / (tn + fp), 4) * 100}%")
+    logging.info(f"Sensitivity: {round(round(tp / (tp + fn), 4) * 100, 2)}%")
 
     logging.info(
         f"Test Set Accuracy: {round(accuracy_score(y_test, baselineforest.predict(x_test)), 4) * 100}%"
@@ -271,8 +270,8 @@ def randomforest_auto(
     logging.info("Tuned Random Forest Evaluation Scores")
     logging.info(f"OOB Score: {tuned_forest.oob_score_}")
     logging.info(f"AUC: {auc}")
-    logging.info(f"Specificity: {round((tn / (tn+fp)), 4) * 100}%")
-    logging.info(f"Sensitivity: {round(round((tp / (tp+fn)), 4) * 100, 2)}%")
+    logging.info(f"Specificity: {round((tn / (tn + fp)), 4) * 100}%")
+    logging.info(f"Sensitivity: {round(round((tp / (tp + fn)), 4) * 100, 2)}%")
 
     logging.info(
         f"Test Set Accuracy: {round(accuracy_score(y_test, tuned_forest.predict(x_test)), 4) * 100}%"
@@ -316,7 +315,7 @@ def randomforest_auto(
     download_data(grouped, f"{output}/{team}/{target}_{year}.csv")
 
     logging.info(
-        f"Time Duration: {(datetime.now().replace(microsecond=0) - start)/60} minutes"
+        f"Time Duration: {(datetime.now().replace(microsecond=0) - start) / 60} minutes"
     )
     return grouped
 

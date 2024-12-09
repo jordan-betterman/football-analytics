@@ -1,5 +1,5 @@
 #!/bin/bash
 
 if [ "$1" == "refmt" ]; then
-    poetry run black .
+    poetry run black . && poetry run flake8 . --ignore=E501,W503
 fi

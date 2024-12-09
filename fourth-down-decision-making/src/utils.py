@@ -59,7 +59,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
         results["n_estimators"].append(val)
 
     if max(results["n_estimators"]) < max_r2:
-        logger.info(f"No improvement made. N Estimators given default value")
+        logger.info("No improvement made. N Estimators given default value")
         max_estimators = 100
         params["n_estimators"] = estimators[max_estimators]
     else:
@@ -84,7 +84,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
         results["min_samples_split"].append(val)
 
     if max(results["min_samples_split"]) < max_r2:
-        logger.info(f"No improvement made. Min Samples Split given default value")
+        logger.info("No improvement made. Min Samples Split given default value")
         max_samp_split = 2
         params["min_samples_split"] = 2
     else:
@@ -110,7 +110,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
         results["min_samples_leaf"].append(val)
 
     if max(results["min_samples_leaf"]) < max(results["min_samples_split"]):
-        logger.info(f"No improvement made. Min Samples Leaf given default value")
+        logger.info("No improvement made. Min Samples Leaf given default value")
         max_samp_leaf = 1
         params["min_samples_leaf"] = 1
     else:
@@ -138,7 +138,7 @@ def rf_regress_params_tuner(train_data, test_data, train_sln, test_sln, cleaned_
         results["max_features"].append(val)
 
     if max(results["max_features"]) < max_r2:
-        logger.info(f"No improvement made. Min Samples Leaf given default value")
+        logger.info("No improvement made. Min Samples Leaf given default value")
         max_feat = len(cleaned_data.columns) ** 0.5
         params["max_features"] = max_feat
     else:

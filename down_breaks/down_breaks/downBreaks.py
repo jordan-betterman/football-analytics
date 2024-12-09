@@ -107,17 +107,6 @@ def prediction_set(dataset):
     yards_on_previous_play = [-10, -5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]
     field_position = [-30, -35, -40, -45, 50, 45, 40, 35, 30]
 
-    master = {
-        "Quarter": [],
-        "Minutes Left": [],
-        "Down": [],
-        "Distance": [],
-        "Offpersonnelbasic": [],
-        "Yards on Previous Play": [],
-        "Fieldposition": [],
-        "Scoredifferential": [],
-        "previous_play": [],
-    }
     logger.info("starting prediction set process")
     logger.info(f"personnel packages: {personnel}")
 
@@ -199,7 +188,7 @@ def randomforest_auto(
     cleaned_data_w_dummies = pd.get_dummies(
         cleaned_data, columns=["previous_play", "Offpersonnelbasic"]
     )
-    logger.info(f"completed data cleaning with dummies")
+    logger.info("completed data cleaning with dummies")
 
     # predictor variables used: all variables besides the target variable
     predictors = cleaned_data_w_dummies.columns.drop([target])
@@ -267,7 +256,7 @@ def randomforest_auto(
         results["n_estimators"].append(val)
 
     if max(results["n_estimators"]) < max_accuracy:
-        logger.info(f"No improvement made. N Estimators given default value")
+        logger.info("No improvement made. N Estimators given default value")
         max_estimators = 100
         params["n_estimators"] = estimators[max_estimators]
     else:
@@ -292,7 +281,7 @@ def randomforest_auto(
         results["min_samples_split"].append(val)
 
     if max(results["min_samples_split"]) < max_accuracy:
-        logger.info(f"No improvement made. Min Samples Split given default value")
+        logger.info("No improvement made. Min Samples Split given default value")
         max_samp_split = 2
         params["min_samples_split"] = 2
     else:
@@ -318,7 +307,7 @@ def randomforest_auto(
         results["min_samples_leaf"].append(val)
 
     if max(results["min_samples_leaf"]) < max(results["min_samples_split"]):
-        logger.info(f"No improvement made. Min Samples Leaf given default value")
+        logger.info("No improvement made. Min Samples Leaf given default value")
         max_samp_leaf = 1
         params["min_samples_leaf"] = 1
     else:
@@ -346,7 +335,7 @@ def randomforest_auto(
         results["max_features"].append(val)
 
     if max(results["max_features"]) < max_accuracy:
-        logger.info(f"No improvement made. Min Samples Leaf given default value")
+        logger.info("No improvement made. Min Samples Leaf given default value")
         max_feat = len(cleaned_data.columns) ** 0.5
         params["max_features"] = max_feat
     else:
@@ -382,7 +371,7 @@ def randomforest_auto(
     max_criterion = find_max(results["criterion"])
     params["criterion"] = criterions[max_criterion]
 
-    logger.info(f"Final Model Accuracy { max_accuracy}")
+    logger.info(f"Final Model Accuracy {max_accuracy}")
 
     logger.info(f"Tuned parameters: {params}")
 
@@ -432,7 +421,7 @@ def randomforest_auto(
 
     download_data(grouped, f"{output}/{team}/{target}_{year}.csv")
 
-    logger.info(f"Time Duration: {(time() - start)/60} minutes")
+    logger.info(f"Time Duration: {(time() - start) / 60} minutes")
     return grouped
 
 
