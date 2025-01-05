@@ -1,7 +1,7 @@
 # Fourth Down Decision Making
 
 #### **Author: Jordan Betterman**
-#### **Email: jordan.betterman@drake.edu**
+#### **Email: jordan.betterman@u.northwestern.edu**
 #### Link to Database Used: [CollegeFootballData.com](https://collegefootballdata.com/exporter)
 
 ## Overview
