@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import requests
 
-load_dotenv
+load_dotenv()
 
 big_ten_teams = [
     "Minnesota",

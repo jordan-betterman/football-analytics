@@ -2,7 +2,7 @@
 
 ### Author: Jordan Betterman
 
-### Email: <jordan.betterman@drake.edu>
+### Email: <jordan.betterman@u.northwestern.edu>
 
 #### DVOA Explained: <https://ftnfantasy.com/nfl/dvoa-explainer>
 
